@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Circular Favicon Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin: 20px 0;
+    }
+    .instructions {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Circular Favicon Generator</h1>
+    
+    <div class="instructions">
+      <h3>Instructions:</h3>
+      <ol>
+        <li>This page will create a circular version of your logo</li>
+        <li>The circular image will be displayed below</li>
+        <li>Right-click on the image and select "Save image as..." to save it</li>
+        <li>Save it as "circular-logo.png" in the public folder</li>
+        <li>Then update your index.html to use this new image as favicon</li>
+      </ol>
+    </div>
+    
+    <canvas id="canvas" width="64" height="64"></canvas>
+    
+    <div id="output"></div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const output = document.getElementById('output');
+      
+      // Create a circular clipping path
+      ctx.beginPath();
+      ctx.arc(32, 32, 32, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.clip();
+      
+      // Load the image
+      const img = new Image();
+      img.src = '/Logo.jpg';
+      
+      img.onload = function() {
+        // Draw the image with the circular clipping path applied
+        ctx.drawImage(img, 0, 0, 64, 64);
+        
+        // Create an image element with the result
+        const resultImg = document.createElement('img');
+        resultImg.src = canvas.toDataURL('image/png');
+        resultImg.style.width = '64px';
+        resultImg.style.height = '64px';
+        resultImg.style.border = '1px solid #ccc';
+        resultImg.style.marginTop = '10px';
+        
+        // Add a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = canvas.toDataURL('image/png');
+        downloadLink.download = 'circular-logo.png';
+        downloadLink.textContent = 'Download Circular Logo';
+        downloadLink.style.display = 'block';
+        downloadLink.style.marginTop = '10px';
+        
+        output.innerHTML = '<h3>Your Circular Logo:</h3>';
+        output.appendChild(resultImg);
+        output.appendChild(downloadLink);
+      };
+    };
+  </script>
+</body>
+</html>

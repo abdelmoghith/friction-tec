@@ -1,0 +1,178 @@
+{
+  "name": "vite_react_shadcn_ts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Whary Desktop Application",
+  "author": "whary",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "vite",
+    "dev:backend": "nodemon api/app.js",
+    "electron": "electron .",
+    "electron:dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"wait-on http://localhost:8080 && electron .\" --kill-others-on-fail",
+    "electron:dev-only": "concurrently \"npm run dev:frontend\" \"wait-on http://localhost:8080 && electron .\" --kill-others-on-fail",
+    "build": "tsc && vite build",
+    "icons": "node scripts/generate-icons.mjs",
+    "prepare-build": "node scripts/prepare-build.cjs",
+    "electron:pack": "npm run prepare-build && npm run icons && npm run build && electron-builder",
+    "electron:dir": "npm run prepare-build && npm run icons && npm run build && electron-builder --dir",
+    "electron:dist": "npm run prepare-build && npm run icons && npm run build && electron-builder --publish=never",
+    "electron:installer": "npm run prepare-build && npm run icons && npm run build && electron-builder --win --publish=never",
+    "electron:portable": "npm run prepare-build && npm run icons && npm run build && electron-builder --win portable --publish=never",
+    "electron:nsis": "npm run prepare-build && npm run icons && npm run build && electron-builder --win nsis --publish=never"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-aspect-ratio": "^1.1.0",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-checkbox": "^1.1.1",
+    "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-context-menu": "^2.2.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-hover-card": "^1.1.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-menubar": "^1.1.1",
+    "@radix-ui/react-navigation-menu": "^1.2.0",
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-radio-group": "^1.2.0",
+    "@radix-ui/react-scroll-area": "^1.1.0",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slider": "^1.2.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
+    "@supabase/supabase-js": "^2.50.0",
+    "@tanstack/react-query": "^5.56.2",
+    "@types/qrcode": "^1.5.5",
+    "axios": "^1.10.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
+    "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.3.0",
+    "express": "^5.1.0",
+    "file-saver": "^2.0.5",
+    "input-otp": "^1.2.4",
+    "lucide-react": "^0.462.0",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.2",
+    "next-themes": "^0.3.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "react-resizable-panels": "^2.1.3",
+    "react-router-dom": "^6.26.2",
+    "recharts": "^2.12.7",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.3",
+    "ws": "^8.18.3",
+    "xlsx": "^0.18.5",
+    "zod": "^3.23.8"
+  },
+  "main": "public/electron.cjs",
+  "homepage": "./",
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.2.0",
+    "electron": "^32.3.3",
+    "electron-builder": "^25.1.8",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "lovable-tagger": "^1.1.7",
+    "nodemon": "^3.1.10",
+    "png-to-ico": "^2.1.8",
+    "postcss": "^8.4.47",
+    "sharp": "^0.33.4",
+    "tailwindcss": "^3.4.11",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1",
+    "wait-on": "^8.0.4"
+  },
+  "build": {
+    "appId": "com.whary.app",
+    "productName": "Whary",
+    "directories": {
+      "output": "electron-dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "api/**/*",
+      "public/electron.cjs",
+      "node_modules/**/*"
+    ],
+    "asarUnpack": [
+      "api/**/*",
+      "node_modules/mysql2/**/*",
+      "node_modules/express/**/*",
+      "node_modules/cors/**/*",
+      "node_modules/socket.io/**/*",
+      "node_modules/ws/**/*",
+      "node_modules/sqlite3/**/*",
+      "**/*.node"
+    ],
+    "extraResources": [
+      {
+        "from": "public/favicon.ico",
+        "to": "favicon.ico"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "publisherName": "Whary"
+    },
+    "forceCodeSigning": false,
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Whary",
+      "include": "build/installer.nsh"
+    }
+  }
+}
