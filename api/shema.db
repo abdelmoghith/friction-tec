@@ -1,0 +1,270 @@
+-- MySQL Schema Conversion
+-- Key changes from SQLite:
+-- 1. AUTO_INCREMENT instead of AUTOINCREMENT
+-- 2. VARCHAR with length limits instead of TEXT
+-- 3. DATETIME instead of DATETIME for timestamps
+-- 4. ENGINE=InnoDB for better performance and foreign key support
+
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    reference VARCHAR(255) NOT NULL UNIQUE,
+    nom VARCHAR(255) NOT NULL,
+    unite VARCHAR(50) NOT NULL,
+    statut VARCHAR(50) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    total_sortie INT NOT NULL DEFAULT 0,
+    total_entrer INT NOT NULL DEFAULT 0,
+    alerte INT NOT NULL DEFAULT 0,
+    type VARCHAR(50) NOT NULL DEFAULT 'matiere',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_products_nom ON products(nom);
+CREATE INDEX idx_products_reference ON products(reference);
+CREATE INDEX idx_products_type ON products(type);
+
+DROP TABLE IF EXISTS product_movements;
+CREATE TABLE product_movements (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    location_id INT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    batch_number VARCHAR(255),
+    fournisseur_id INT,
+    atelier VARCHAR(255),
+    etage_id INT,
+    part_id INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    FOREIGN KEY (fournisseur_id) REFERENCES fournisseurs(id),
+    FOREIGN KEY (etage_id) REFERENCES location_etages(id),
+    FOREIGN KEY (part_id) REFERENCES location_parts(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_movements_product_id ON product_movements(product_id);
+CREATE INDEX idx_movements_date ON product_movements(date);
+CREATE INDEX idx_movements_location_id ON product_movements(location_id);
+CREATE INDEX idx_movements_fournisseur_id ON product_movements(fournisseur_id);
+
+CREATE TABLE locations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT,
+    type VARCHAR(50) NOT NULL DEFAULT 'with_etages',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS fournisseurs;
+CREATE TABLE fournisseurs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(100) NOT NULL UNIQUE,
+    designation VARCHAR(255) NOT NULL,
+    telephones TEXT,
+    adresse VARCHAR(255),
+    type ENUM('local','etranger') NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE semi_products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    reference VARCHAR(255) NOT NULL UNIQUE,
+    nom VARCHAR(255) NOT NULL,
+    unite VARCHAR(50) NOT NULL,
+    statut VARCHAR(50) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    total_sortie INT NOT NULL DEFAULT 0,
+    total_entrer INT NOT NULL DEFAULT 0,
+    alerte INT NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_semi_products_nom ON semi_products(nom);
+CREATE INDEX idx_semi_products_reference ON semi_products(reference);
+
+CREATE TABLE semi_product_details (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    semi_product_id INT NOT NULL,
+    component_type VARCHAR(50) NOT NULL,
+    component_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unite VARCHAR(50) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (semi_product_id) REFERENCES semi_products(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_semi_product_details_semi_product_id ON semi_product_details(semi_product_id);
+
+DROP TABLE IF EXISTS semi_product_movements;
+CREATE TABLE semi_product_movements (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    semi_product_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    location_id INT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    batch_number VARCHAR(255),
+    fournisseur_id INT,
+    atelier VARCHAR(255),
+    etage_id INT,
+    part_id INT,
+    note TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (semi_product_id) REFERENCES semi_products(id),
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    FOREIGN KEY (fournisseur_id) REFERENCES fournisseurs(id),
+    FOREIGN KEY (etage_id) REFERENCES location_etages(id),
+    FOREIGN KEY (part_id) REFERENCES location_parts(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_semi_movements_semi_product_id ON semi_product_movements(semi_product_id);
+CREATE INDEX idx_semi_movements_location_id ON semi_product_movements(location_id);
+CREATE INDEX idx_semi_movements_fournisseur_id ON semi_product_movements(fournisseur_id);
+
+CREATE TABLE finished_products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    reference VARCHAR(255) NOT NULL UNIQUE,
+    nom VARCHAR(255) NOT NULL,
+    unite VARCHAR(50) NOT NULL,
+    statut VARCHAR(50) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    total_sortie INT NOT NULL DEFAULT 0,
+    total_entrer INT NOT NULL DEFAULT 0,
+    alerte INT NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_finished_products_nom ON finished_products(nom);
+CREATE INDEX idx_finished_products_reference ON finished_products(reference);
+
+CREATE TABLE finished_product_details (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    finished_product_id INT NOT NULL,
+    component_type VARCHAR(50) NOT NULL,
+    component_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unite VARCHAR(50) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (finished_product_id) REFERENCES finished_products(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_finished_product_details_finished_product_id ON finished_product_details(finished_product_id);
+
+DROP TABLE IF EXISTS finished_product_movements;
+CREATE TABLE finished_product_movements (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    finished_product_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    location_id INT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    batch_number VARCHAR(255),
+    fournisseur_id INT,
+    atelier VARCHAR(255),
+    etage_id INT,
+    part_id INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (finished_product_id) REFERENCES finished_products(id),
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    FOREIGN KEY (fournisseur_id) REFERENCES fournisseurs(id),
+    FOREIGN KEY (etage_id) REFERENCES location_etages(id),
+    FOREIGN KEY (part_id) REFERENCES location_parts(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_finished_movements_finished_product_id ON finished_product_movements(finished_product_id);
+CREATE INDEX idx_finished_movements_location_id ON finished_product_movements(location_id);
+CREATE INDEX idx_finished_movements_fournisseur_id ON finished_product_movements(fournisseur_id);
+
+DROP TABLE IF EXISTS product_materials;
+CREATE TABLE product_materials (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    material_id INT NOT NULL,
+    material_type VARCHAR(50) NOT NULL DEFAULT 'matiere',
+    quantity INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_product_materials_product_id ON product_materials(product_id);
+CREATE INDEX idx_product_materials_material_type ON product_materials(material_type);
+
+CREATE TABLE staff (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    role VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_staff_email ON staff(email);
+CREATE INDEX idx_staff_role ON staff(role);
+
+CREATE TABLE location_etages (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    location_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    places INT NOT NULL,
+    currentStock INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (location_id) REFERENCES locations(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE location_parts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    location_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    maxCapacity INT NOT NULL,
+    currentStock INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (location_id) REFERENCES locations(id)
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS movements;
+CREATE TABLE movements (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_type VARCHAR(50) NOT NULL,
+    product_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    location_id INT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    batch_number VARCHAR(255),
+    fournisseur_id INT,
+    atelier VARCHAR(255),
+    staff_id INT,
+    etage_id INT,
+    part_id INT,
+    fabrication_date DATE,
+    expiration_date DATE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    FOREIGN KEY (fournisseur_id) REFERENCES fournisseurs(id),
+    FOREIGN KEY (staff_id) REFERENCES staff(id),
+    FOREIGN KEY (etage_id) REFERENCES location_etages(id),
+    FOREIGN KEY (part_id) REFERENCES location_parts(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_movements_product_type_id ON movements(product_type, product_id);
+
+CREATE TABLE activity_logs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    staff_id INT NOT NULL,
+    action VARCHAR(255) NOT NULL,           -- e.g., 'create_product', 'update_stock', 'delete_order'
+    target_table VARCHAR(100),              -- e.g., 'products', 'orders'
+    target_id INT,                          -- ID of the affected row (optional)
+    details TEXT,                           -- JSON or text with more info (optional)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (staff_id) REFERENCES staff(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_activity_logs_staff_id ON activity_logs(staff_id);
+CREATE INDEX idx_activity_logs_action ON activity_logs(action);

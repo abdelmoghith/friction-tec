@@ -1,0 +1,2 @@
+ALTER TABLE movements
+ADD COLUMN quality_status VARCHAR(20) DEFAULT NULL;
