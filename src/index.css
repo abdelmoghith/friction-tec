@@ -1,0 +1,599 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 260 20% 99%;
+    --foreground: 240 10% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 94% 96%;
+    --secondary-foreground: 240 6% 10%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 0 0% 0%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 4%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 0 0% 0%;
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 4%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 4%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 0 0% 0%;
+
+    --sidebar-background: 240 6% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4% 16%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 0 0% 0%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .glass-card {
+    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-sm;
+  }
+
+  .stats-card {
+    @apply p-6 rounded-xl flex flex-col gap-2 transition-all duration-300 hover:shadow-md;
+  }
+
+  .animate-delay-1 {
+    animation-delay: 0.1s;
+  }
+
+  .animate-delay-2 {
+    animation-delay: 0.2s;
+  }
+
+  .animate-delay-3 {
+    animation-delay: 0.3s;
+  }
+
+  .animate-delay-4 {
+    animation-delay: 0.4s;
+  }
+
+  /* Sidebar styles */
+  .bg-sidebar {
+    @apply bg-background dark:bg-background;
+  }
+
+  .text-sidebar-foreground {
+    @apply text-foreground dark:text-foreground;
+  }
+
+  .bg-sidebar-accent {
+    @apply bg-primary/10 dark:bg-primary/20;
+  }
+
+  .text-sidebar-accent-foreground {
+    @apply text-primary dark:text-primary;
+  }
+
+  /* Hide scrollbars completely */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+    width: 0;
+    height: 0;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar-thumb {
+    display: none;
+  }
+}
+
+/* Print styles for FICHE D'ACCOMPAGNEMENT */
+@media print {
+  @page {
+    size: A4;
+    margin: 10px;
+  }
+
+  /* Complete reset for print */
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html, body {
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Hide dialog overlay completely */
+  [role="dialog"] > div:first-child,
+  .fixed.inset-0.z-50 {
+    display: none !important;
+  }
+
+  /* Make dialog content fill page */
+  [role="dialog"] {
+    position: static !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  /* Print content positioned at absolute zero */
+  .print-content {
+    position: absolute !important;
+    top: 0mm !important;
+    left: 0mm !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    color: black !important;
+    background: white !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  /* Restore only essential padding for form structure */
+  .print-content .p-2 {
+    padding: 6px !important;
+  }
+
+  .print-content .p-3 {
+    padding: 8px !important;
+  }
+
+  .print-content .p-4 {
+    padding: 12px !important;
+  }
+
+  .print-content .pl-2 {
+    padding-left: 6px !important;
+  }
+
+  .print-content .pt-4 {
+    padding-top: 12px !important;
+  }
+
+  .print-content * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-content .border-2 {
+    border-width: 2px !important;
+    border-style: solid !important;
+  }
+
+  .print-content .border {
+    border-width: 1px !important;
+    border-style: solid !important;
+  }
+
+  .print-content .border-black {
+    border-color: black !important;
+  }
+
+  .print-content .border-t-2 {
+    border-top-width: 2px !important;
+    border-top-style: solid !important;
+  }
+
+  .print-content .border-r-2 {
+    border-right-width: 2px !important;
+    border-right-style: solid !important;
+  }
+
+  .print-content .border-l-2 {
+    border-left-width: 2px !important;
+    border-left-style: solid !important;
+  }
+
+  .print-content .border-b {
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
+  }
+
+  .print-content .border-t {
+    border-top-width: 1px !important;
+    border-top-style: solid !important;
+  }
+
+  .print-content .border-l {
+    border-left-width: 1px !important;
+    border-left-style: solid !important;
+  }
+
+  .print-content .border-t-0 {
+    border-top: none !important;
+  }
+
+  /* Input and textarea styling for print - Most aggressive approach */
+  .print-content input,
+  .print-content textarea,
+  .print-content input[type="text"],
+  .print-content input[type="number"],
+  .print-content input[type="email"],
+  .print-content input[type="tel"],
+  .print-content input[type="date"],
+  .print-content input[type="datetime-local"] {
+    border: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+    outline-width: 0 !important;
+    box-shadow: none !important;
+    padding: 2px 4px !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    font-family: Arial, sans-serif !important;
+    color: black !important;
+    width: 100% !important;
+    resize: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Override any potential component library styles */
+  .print-content .relative input,
+  .print-content .flex input,
+  .print-content div input,
+  .print-content span input {
+    border: none !important;
+    border-width: 0 !important;
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ultra-specific overrides for shadcn/ui components */
+  .print-content input.flex,
+  .print-content input.h-10,
+  .print-content input.w-full,
+  .print-content input.rounded-md,
+  .print-content input.border,
+  .print-content input.border-input,
+  .print-content input.bg-background,
+  .print-content input.px-3,
+  .print-content input.py-2,
+  .print-content input.text-sm,
+  .print-content input.ring-offset-background,
+  .print-content textarea.flex,
+  .print-content textarea.min-h-\[80px\],
+  .print-content textarea.w-full,
+  .print-content textarea.rounded-md,
+  .print-content textarea.border,
+  .print-content textarea.border-input,
+  .print-content textarea.bg-background,
+  .print-content textarea.px-3,
+  .print-content textarea.py-2,
+  .print-content textarea.text-sm {
+    border: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    ring: none !important;
+    ring-offset: none !important;
+  }
+
+  /* Global override for all inputs in print */
+  * input,
+  * textarea {
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Nuclear option - override everything */
+  input,
+  textarea,
+  input[type="text"],
+  input[type="date"],
+  input[type="datetime-local"] {
+    border: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+
+  /* Remove date input styling */
+  .print-content input[type="date"],
+  .print-content input[type="datetime-local"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: textfield !important;
+    appearance: none !important;
+  }
+
+  .print-content input[type="date"]::-webkit-calendar-picker-indicator,
+  .print-content input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+
+  /* Checkbox styling for print */
+  .print-content input[type="checkbox"] {
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 6px !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    border: 1px solid black !important;
+    background: white !important;
+    position: relative !important;
+  }
+
+  .print-content input[type="checkbox"]:checked::after {
+    content: "✓" !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: 1px !important;
+    font-size: 10px !important;
+    color: black !important;
+  }
+
+  .print-content .font-bold {
+    font-weight: bold !important;
+  }
+
+  .print-content .text-center {
+    text-align: center !important;
+  }
+
+  .print-content .text-right {
+    text-align: right !important;
+  }
+
+  .print-content .underline {
+    text-decoration: underline !important;
+  }
+
+  .print-content .bg-blue-600 {
+    background-color: #2563eb !important;
+  }
+
+  .print-content .text-white {
+    color: white !important;
+  }
+
+  .print-content .rounded {
+    border-radius: 4px !important;
+  }
+
+  /* Spacing utilities */
+  .print-content .space-y-4>*+* {
+    margin-top: 12px !important;
+  }
+
+  .print-content .space-y-3>*+* {
+    margin-top: 8px !important;
+  }
+
+  .print-content .space-y-6>*+* {
+    margin-top: 16px !important;
+  }
+
+  .print-content .space-x-2>*+* {
+    margin-left: 6px !important;
+  }
+
+  .print-content .space-x-8>*+* {
+    margin-left: 24px !important;
+  }
+
+  /* Margin utilities */
+  .print-content .mt-1 {
+    margin-top: 3px !important;
+  }
+
+  .print-content .mt-4 {
+    margin-top: 12px !important;
+  }
+
+  .print-content .mt-8 {
+    margin-top: 20px !important;
+  }
+
+  .print-content .mb-1 {
+    margin-bottom: 3px !important;
+  }
+
+  .print-content .mb-2 {
+    margin-bottom: 6px !important;
+  }
+
+  .print-content .mb-4 {
+    margin-bottom: 12px !important;
+  }
+
+  /* Padding utilities */
+  .print-content .p-2 {
+    padding: 6px !important;
+  }
+
+  .print-content .p-3 {
+    padding: 8px !important;
+  }
+
+  .print-content .p-4 {
+    padding: 12px !important;
+  }
+
+  .print-content .pl-2 {
+    padding-left: 6px !important;
+  }
+
+  .print-content .pt-4 {
+    padding-top: 12px !important;
+  }
+
+  /* Width and height utilities */
+  .print-content .w-12 {
+    width: 36px !important;
+  }
+
+  .print-content .h-12 {
+    height: 36px !important;
+  }
+
+  .print-content .w-20 {
+    width: 60px !important;
+  }
+
+  .print-content .w-48 {
+    width: 150px !important;
+  }
+
+  .print-content .w-64 {
+    width: 200px !important;
+  }
+
+  .print-content .w-1\/2 {
+    width: 50% !important;
+  }
+
+  .print-content .flex-1 {
+    flex: 1 !important;
+  }
+
+  .print-content .h-16 {
+    height: 48px !important;
+  }
+
+  .print-content .h-20 {
+    height: 60px !important;
+  }
+
+  /* Flexbox utilities */
+  .print-content .flex {
+    display: flex !important;
+  }
+
+  .print-content .items-center {
+    align-items: center !important;
+  }
+
+  .print-content .justify-center {
+    justify-content: center !important;
+  }
+
+  /* Text size adjustments */
+  .print-content .text-lg {
+    font-size: 14px !important;
+  }
+
+  .print-content .text-sm {
+    font-size: 10px !important;
+  }
+
+  /* Hide print button and dialog controls */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Hide dialog close button (X) in print */
+  [data-radix-dialog-close],
+  .absolute.right-3.top-3,
+  .absolute.right-4.top-4 {
+    display: none !important;
+  }
+}

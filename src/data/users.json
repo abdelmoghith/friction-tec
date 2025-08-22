@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Whary",
+    "role": "admin",
+    "email": "support@whary.com",
+    "password": "whary@16",
+    "access": [
+      "/",
+      "/products",
+      "/products/new",
+      "/buyers",
+      "/locations",
+      "/settings",
+      "/semi-products",
+      "/finished-products",
+      "/articles",
+      "/control-quality",
+      "/fiche-accompagnement",
+      "/prison-zone-history",
+      "/sortie",
+      "/reports"
+    ]
+  },  
+  {
+    "name": "Logistique",
+    "role": "logistique",
+    "email": "logistique@friction.com",
+    "password": "logistique@31",
+    "access": [
+      "/",
+      "/products",
+      "/products/new",
+      "/locations",
+      "/semi-products",
+      "/finished-products",
+      "/articles",
+      "/prison-zone-history",
+      "/sortie"
+    ]
+  },
+  {
+    "name": "ControlQuality",
+    "role": "control-quality",
+    "email": "quality@friction.com",
+    "password": "quality@31",
+    "access": [
+      "/",
+      "/control-quality",
+      "/products",
+      "/semi-products",
+      "/finished-products",
+      "/prison-zone-history",
+      "/articles",
+      "/locations",
+      "/buyers"
+    ]
+  }
+
+
+
+]
